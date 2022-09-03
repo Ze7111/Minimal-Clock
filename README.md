@@ -28,7 +28,7 @@ python .\app.py
 - The program will never show on top of other windows it will always be behind them.
 - The program can show the time in 12 hour or 24 hour format.
 - The program can show the date.
-- The program can automaticly update it-self if I add new features. (You can change this in the config file)
+- The program can automatically update it-self if I add new features. (You can change this in the config file)
 - You can change the text color.
 - You can change the font.
 - You can change the font size.
