@@ -1,5 +1,9 @@
 import threading
 from src.acrylic import WindowEffect
+from src.r_config import Read # import the module for reading the config file
+read = Read().get_default # read the config file
+if read('AutoUpdate') == True:
+    import src.update
 
 try:
     import PySide2, configparser, ctypes # type: ignore
@@ -17,12 +21,12 @@ from PySide2 import QtWidgets # type: ignore
 from PySide2.QtCore import Qt # type: ignore
 from PySide2.QtGui import QFont, QIcon # type: ignore
 import sys; from time import strftime, sleep # import the time module
-from src.r_config import Read # import the module for reading the config file
+
 
 innit: bool = False # if the window has been initialized
 stop_threads: bool = False # set the stop_threads variable to False
 scw, sch = 0, 0 # screen width and height
-read = Read().get_default # read the config file
+
 
 class Window(QWidget): # create a class for the window
     def __init__(self): # the __init__ function
