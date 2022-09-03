@@ -1,8 +1,13 @@
 import threading
 from src.acrylic import WindowEffect
 from src.r_config import Read # import the module for reading the config file
-
 read = Read().get_default # read the config file
+if read('FirstLaunch') == 'True' or read('FirstLaunch') == 'Backup-Used': # if the FirstLaunch variable is True or Backup-Used
+    from src.FirstLaunch import setup # import the setup class
+    setup().write_to_file() # write the config file
+    exit()
+
+
 if read('AutoUpdate') == 'True':
     from src.update import main
     main()
@@ -84,4 +89,4 @@ if __name__ == "__main__": # if the file is being run
         app.exec_() # run the application
     finally: # if the code fails
         stop_threads = True # set the stop_threads variable to True
-        sys.exit(1) # exit the program
+        os.system('pause') # pause the program
