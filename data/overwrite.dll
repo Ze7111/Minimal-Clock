@@ -35,9 +35,9 @@ def run(): # run the script
     except: # if the script fails to run in python3
         os.system('python .\\app.py') # run the app in python
 
-if __name__ != '__main__': # run the script if it is the main script
+if __name__ == '__main__': # run the script if it is the main script
     deleteAllFiles() # delete all files in the root directory
     copy_from_temp() # copy the files from the temp directory to the root directory
     run() # run the script
 else: # if the script is not the main script
-    print('This script is not meant to be run directly as it can delete all files of this program.') # print a message
+    print('Process failed to run with error [0x053DLL]') # print a message
