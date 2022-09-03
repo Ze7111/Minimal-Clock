@@ -3,6 +3,9 @@
 
 - To run the program, you need to have python installed on your computer. You can download it from [here](https://www.python.org/downloads/).
 
+## Images
+![image](images/image1.png)
+
 ## How Run the program on Windows
 Simply run the run-py.bat or run-py3.bat file, all the dependencies will be installed automatically.
 
