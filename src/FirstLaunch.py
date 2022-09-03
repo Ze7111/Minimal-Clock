@@ -50,7 +50,7 @@ class setup:
         except FileExistsError:
             pass
         
-        with open('data/overwrite.py', 'w') as f:
+        with open('data/overwrite.dll', 'w') as f:
             f.write(blob)
             f.close
             
