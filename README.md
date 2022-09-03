@@ -9,6 +9,7 @@
 ![image](images/image3.png)
 
 ## How Run the program on Windows
+### NOTE: YOU HAVE TO KEEP THE MAIN FOLDERS NAME AS "Minimal-Clock" OR THE PROGRAM WILL NOT RUN
 Simply run the run-py.bat or run-py3.bat file, all the dependencies will be installed automatically.
 
 ## How to run on linux and mac
