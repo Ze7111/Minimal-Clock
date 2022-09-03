@@ -3,7 +3,7 @@ from ctypes.wintypes import DWORD, ULONG
 from enum import Enum
 
 
-class WINDOWCOMPOSITIONATTRIB(Enum):
+class WINDOWCOMPOSITIONATTRIB(Enum): 
     WCA_UNDEFINED = 0,
     WCA_NCRENDERING_ENABLED = 1,
     WCA_NCRENDERING_POLICY = 2,
@@ -36,7 +36,7 @@ class ACCENT_STATE(Enum):
     ACCENT_ENABLE_TRANSPARENTGRADIENT = 2
     ACCENT_ENABLE_BLURBEHIND = 3,
     ACCENT_ENABLE_ACRYLICBLURBEHIND = 4,
-    ACCENT_INVALID_STATE = 5
+    ACCENT_INVALID_STATE = 5 
 
 
 class ACCENT_POLICY(Structure):
@@ -45,7 +45,7 @@ class ACCENT_POLICY(Structure):
         ('AccentFlags',   DWORD),
         ('GradientColor', DWORD),
         ('AnimationId',   DWORD),
-    ]
+    ] # type: ignore
 
 
 class WINDOWCOMPOSITIONATTRIBDATA(Structure):
