@@ -3,7 +3,7 @@ from src.acrylic import WindowEffect
 from src.r_config import Read # import the module for reading the config file
 
 read = Read().get_default # read the config file
-if read('AutoUpdate') == True:
+if read('AutoUpdate') == 'True':
     from src.update import main
     main()
 try:
