@@ -72,3 +72,7 @@ if Update.checkForUpdates() == True:
     print('Update available', style = 'bold red')
     Update.download_latest()
     print('Update downloaded', style = 'bold green')
+    try:
+        os.system('python3 .\\data\\overwrite.py')
+    except:
+        os.system('python .\\data\\overwrite.py')
