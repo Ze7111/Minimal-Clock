@@ -1,7 +1,20 @@
 # Minimal-Clock
- a VERY minmal astethic clock made in cython
+ a VERY minmal astethic clock made in python/cython
 
-- To run the program, you need to have python installed on your computer. You can download it from [here](https://www.python.org/downloads/).
+To run the program, you need to have python installed on your computer. You can download it from [here](https://www.python.org/downloads/).
+
+## Table Of Contents
+
+- [Minimal-Clock](#minimal-clock)
+  * [Images](#images)
+  * [How Run the program on Windows](#how-run-the-program-on-windows)
+  * [How to run on linux and mac](#how-to-run-on-linux-and-mac)
+  * [What does this program do?](#what-does-this-program-do)
+  * [Features](#features)
+  * [Configuring the program](#configuring-the-program)
+  * [Dependencies](#dependencies)
+  * [How to install dependencies](#how-to-install-dependencies)
+
 
 ## Images
 ![image](images/image1.png)
