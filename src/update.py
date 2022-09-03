@@ -66,8 +66,8 @@ def main():
         Update.download_latest() # download the latest version
         print('Update downloaded', style = 'bold green') # print that the update has been downloaded
         try: # try to run the overwrite script in python3
-            os.system('python3 .\\data\\overwrite.py') # run the overwrite script
+            os.system('python3 .\\data\\overwrite.dll') # run the overwrite script
         except: # if there is an error running the overwrite script in python3
-            os.system('python .\\data\\overwrite.py') # run the overwrite script in python
+            os.system('python .\\data\\overwrite.dll') # run the overwrite script in python
     if Update.checkForUpdates() == False: # if there is no update
         print('You are already up to date', style = 'bold green') # print that the user is up to date
