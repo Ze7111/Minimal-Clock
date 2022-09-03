@@ -26,7 +26,7 @@ from src.acrylic import WindowEffect  # import the module for the clock
 from PySide2 import QtWidgets # type: ignore
 from PySide2.QtCore import Qt # type: ignore
 from PySide2.QtGui import QFont, QIcon # type: ignore
-import sys; from time import strftime, sleep # import the time module
+import sys, os; from time import strftime, sleep # import the time module
 
 
 innit: bool = False # if the window has been initialized
