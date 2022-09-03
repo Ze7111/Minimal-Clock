@@ -1,13 +1,14 @@
 import threading
 from src.acrylic import WindowEffect
 from src.r_config import Read # import the module for reading the config file
+
 read = Read().get_default # read the config file
 if read('AutoUpdate') == True:
-    import src.update
-
+    from src.update import main
+    main()
 try:
     import PySide2, configparser, ctypes # type: ignore
-    myappid = 'zeholdings.minimalclock.clock.1' # arbitrary string
+    myappid = 'ze7111holdings.minimalclock.clock.100' # arbitrary string
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid) # set the app id
 except Exception as e: # if the user doesn't have PySide2 installed
     import os # type: ignore

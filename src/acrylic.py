@@ -1,16 +1,16 @@
-from ctypes import POINTER, c_bool, sizeof, windll, pointer, c_int
-from ctypes.wintypes import DWORD
+from ctypes import POINTER, c_bool, sizeof, windll, pointer, c_int 
+from ctypes.wintypes import DWORD 
 
-from win32 import win32api, win32gui
-from win32.lib import win32con
+from win32 import win32api, win32gui 
+from win32.lib import win32con 
 
-from src.c_classes import ACCENT_POLICY, ACCENT_STATE, WINDOWCOMPOSITIONATTRIB, WINDOWCOMPOSITIONATTRIBDATA
-
-class WindowEffect:
-    def __init__(self): 
-        self.SetWindowCompositionAttribute = windll.user32.SetWindowCompositionAttribute
+from src.c_classes import ACCENT_POLICY, ACCENT_STATE, WINDOWCOMPOSITIONATTRIB, WINDOWCOMPOSITIONATTRIBDATA 
+ 
+class WindowEffect: 
+    def __init__(self):
+        self.SetWindowCompositionAttribute = windll.user32.SetWindowCompositionAttribute 
         self.SetWindowCompositionAttribute.restype = c_bool
-        self.SetWindowCompositionAttribute.argtypes = [c_int, POINTER(WINDOWCOMPOSITIONATTRIBDATA)]
+        self.SetWindowCompositionAttribute.argtypes = [c_int, POINTER(WINDOWCOMPOSITIONATTRIBDATA)] 
         
         self.accentPolicy = ACCENT_POLICY()
         self.winCompAttrData = WINDOWCOMPOSITIONATTRIBDATA()

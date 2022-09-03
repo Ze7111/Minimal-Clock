@@ -5,6 +5,8 @@
 
 ## Images
 ![image](images/image1.png)
+![image](images/image2.png)
+![image](images/image3.png)
 
 ## How Run the program on Windows
 Simply run the run-py.bat or run-py3.bat file, all the dependencies will be installed automatically.
