@@ -1,14 +1,21 @@
 try: # try to import the required modules
-    import requests, rich, tempfile, os # requests for downloading the file, rich for the progress bar, tempfile for the temporary file, and os for the file operations
+    import requests, rich, tempfile, os, subprocess # requests for downloading the file, rich for the progress bar, tempfile for the temporary file, and os for the file operations
 except Exception as e: # if there is an error
-    import os # import os
+    import subprocess, sys # type: ignore
     string = str(e) # convert the error to a string
     module = string.split("'")[1].split("'")[0] # get the module name
-    os.system(f'pip install {module}') # install the module
+    try: # try to install the module
+        subprocess.run([sys.executable, "-m", "pip", "install", module]) # install the module
+    except Exception as e: # if the user doesn't have pip installed
+        print(f'Error: {e}') # print the error
+    print("Please restart the program.") # tell the user to restart the program
+    sys.exit(0) # exit the program
     
 from rich import console, progress # import the console and progress bar from rich
-from src.r_config import Read; read = Read().get_default # import the config reader and get the default config
-
+from src.r_config import Read # import the module for reading the config file
+from subprocess import Popen as pop # import the Popen function from subprocess
+read = Read().get_default # import the config reader and get the default config
+done = False # set the done variable to False
 print = console.Console().print # set the print function to the rich console print function
 progress = progress.Progress() # create the console and progress bar
 
@@ -23,11 +30,14 @@ class Update: # create the class
         return latestVersion
     
     def checkForUpdates(): # check for updates
+        global done
         # Get the latest version
         latestVersion = Update.getLatestVersion() # get the latest version
         # Get the current version
         currentVersion = read('AppVersion') # get the current version
-        print(f"Current version: {currentVersion} | Latest version: {latestVersion}") # print the current and latest version
+        if done == False: # if the update has not been done
+            print(f"Current version: {currentVersion} | Latest version: {latestVersion}") # print the current and latest version
+            done = True # set the done variable to True
         # If the latest version is not the same as the current version
         if latestVersion != currentVersion: # if the latest version is not the same as the current version
             # Return True
@@ -66,8 +76,8 @@ def main():
         Update.download_latest() # download the latest version
         print('Update downloaded', style = 'bold green') # print that the update has been downloaded
         try: # try to run the overwrite script in python3
-            os.system('python3 .\\data\\overwrite.dll') # run the overwrite script
+            pop('python3 .\\data\\overwrite.dll', shell=True) # run the overwrite script
         except: # if there is an error running the overwrite script in python3
-            os.system('python .\\data\\overwrite.dll') # run the overwrite script in python
+            pop('python .\\data\\overwrite.dll', shell=True) # run the overwrite script in python
     if Update.checkForUpdates() == False: # if there is no update
         print('You are already up to date', style = 'bold green') # print that the user is up to date
