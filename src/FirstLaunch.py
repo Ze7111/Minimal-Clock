@@ -1,4 +1,6 @@
-import os; blob = r"""import os, shutil, tempfile, requests, zipfile
+import os
+
+blob = r"""import os, shutil, tempfile, requests, zipfile
 
 def deleteAllFiles(): # delete all files in the root directory
     for file in os.listdir(): # iterate over all the files in the directory
