@@ -5,28 +5,34 @@ read = Read().get_default # read the config file
 if read('FirstLaunch') == 'True' or read('FirstLaunch') == 'Backup-Used': # if the FirstLaunch variable is True or Backup-Used
     from src.FirstLaunch import setup # import the setup class
     setup().write_to_file() # write the config file
-    exit()
+    pass
 
 
 if read('AutoUpdate') == 'True':
     from src.update import main
     main()
 try:
-    import PySide2, configparser, ctypes # type: ignore
+    import PySide2, configparser, ctypes, subprocess # type: ignore
     myappid = 'ze7111holdings.minimalclock.clock.100' # arbitrary string
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid) # set the app id
 except Exception as e: # if the user doesn't have PySide2 installed
-    import os # type: ignore
+    import subprocess, sys # type: ignore
     string = str(e) # convert the error to a string
     module = string.split("'")[1].split("'")[0] # get the module name
-    os.system(f'pip install {module}') # install the module
+    try: # try to install the module
+        subprocess.run([sys.executable, "-m", "pip", "install", module]) # install the module
+    except Exception as e: # if the user doesn't have pip installed
+        print(f'Error: {e}') # print the error
+    print("Please restart the program.") # tell the user to restart the program
+    sys.exit(0) # exit the program
 
 from PySide2.QtWidgets import QWidget, QApplication # type: ignore
 from src.acrylic import WindowEffect  # import the module for the clock
 from PySide2 import QtWidgets # type: ignore
 from PySide2.QtCore import Qt # type: ignore
 from PySide2.QtGui import QFont, QIcon # type: ignore
-import sys, os; from time import strftime, sleep # import the time module
+import sys, os, subprocess
+from time import strftime, sleep # import the time module
 
 
 innit: bool = False # if the window has been initialized
@@ -42,7 +48,9 @@ class Window(QWidget): # create a class for the window
         size = screen.size() # get the size of the screen
         scw, sch = size.width(), size.height() # set the screen width and height variables
         self.setFixedWidth(scw); self.setFixedHeight(sch) # set the window size
-        self.setWindowTitle(read('AppName')); self.setWindowFlags(Qt.FramelessWindowHint); self.setAttribute(Qt.WA_TranslucentBackground) # set the window title, flags, and background
+        self.setWindowTitle(read('AppName'))
+        self.setWindowFlags(Qt.FramelessWindowHint)
+        self.setAttribute(Qt.WA_TranslucentBackground) # set the window title, flags, and background
         self.setWindowIcon(QIcon('assets/icon.ico')) # set the window icon
         self.ui_layout = QtWidgets.QGridLayout(self)  # create a ui layout
         self.ui_layout.setAlignment(Qt.AlignCenter)  # center the layout
@@ -73,9 +81,13 @@ def third_process(win):
         step = 255//155 # 255/155 = 1.64
         for i in range(0, max): # red
             i += 1 # increment the i variable
-            red = 255 - (i*step); green = 0 # set the red and green values
-            blue = 255 - red; RGBtriplet = (red, green, blue) # set the RGB triplet
-            win.label.setStyleSheet(f"color: rgb({red}, {green}, {blue});"); win.update(); sleep(0.01) # update the text         
+            red = 255 - (i*step)
+            green = 0 # set the red and green values
+            blue = 255 - red
+            RGBtriplet = (red, green, blue) # set the RGB triplet
+            win.label.setStyleSheet(f"color: rgb({red}, {green}, {blue});")
+            win.update()
+            sleep(0.01) # update the text         
             if stop_threads: break # if the stop_threads variable is True, break the loop
         if stop_threads: break # if the stop_threads variable is True, break the loop
 
@@ -89,4 +101,4 @@ if __name__ == "__main__": # if the file is being run
         app.exec_() # run the application
     finally: # if the code fails
         stop_threads = True # set the stop_threads variable to True
-        os.system('pause') # pause the program
+        sys.exit(0) # exit the program
