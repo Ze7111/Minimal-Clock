@@ -1,8 +1,7 @@
-# Minimal-Clock
+# Minimal-Clock [![CodeFactor](https://www.codefactor.io/repository/github/ze7111/minimal-clock/badge/main)](https://www.codefactor.io/repository/github/ze7111/minimal-clock/overview/main)
  a VERY minmal astethic clock made in python/cython
 
 To run the program, you need to have python installed on your computer. You can download it from [here](https://www.python.org/downloads/).
-
 ## Table Of Contents
 
 - [Minimal-Clock](#minimal-clock)
