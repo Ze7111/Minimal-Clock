@@ -41,16 +41,16 @@ class ACCENT_STATE(Enum):
 
 class ACCENT_POLICY(Structure):
     _fields_ = [
-        ('AccentState',   DWORD),
-        ('AccentFlags',   DWORD),
+        ('AccentState', DWORD),
+        ('AccentFlags', DWORD),
         ('GradientColor', DWORD),
-        ('AnimationId',   DWORD),
+        ('AnimationId', DWORD),
     ] # type: ignore
 
 
 class WINDOWCOMPOSITIONATTRIBDATA(Structure):
     _fields_ = [
-        ('Attribute',  DWORD),
-        ('Data',       POINTER(ACCENT_POLICY)),
+        ('Attribute', DWORD),
+        ('Data', POINTER(ACCENT_POLICY)),
         ('SizeOfData', ULONG),
     ]
