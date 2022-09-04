@@ -47,7 +47,8 @@ class Window(QWidget): # create a class for the window
         screen = app.primaryScreen() # get the screen
         size = screen.size() # get the size of the screen
         scw, sch = size.width(), size.height() # set the screen width and height variables
-        self.setFixedWidth(scw); self.setFixedHeight(sch) # set the window size
+        self.setFixedWidth(scw)
+        self.setFixedHeight(sch) # set the window size
         self.setWindowTitle(read('AppName'))
         self.setWindowFlags(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground) # set the window title, flags, and background
@@ -68,7 +69,8 @@ def second_process(win):
         global stop_threads # make the stop_threads variable global
         for i in range(100): # loop through every hex color smoothly
             sleep(1) # sleep for 1 second
-            win.label.setText(f"{strftime(read('TimeFormat'))}"); win.update() # update the text and the window
+            win.label.setText(f"{strftime(read('TimeFormat'))}")
+            win.update() # update the text and the window
             if stop_threads: break # if the stop_threads variable is True, break the loop
         if stop_threads: break # if the stop_threads variable is True, break the loop
         
@@ -95,7 +97,8 @@ if __name__ == "__main__": # if the file is being run
     try: # try to run the code
         app = QApplication(sys.argv) # create an application
         window = win = Window() # create a window
-        win.setWindowIcon(QIcon(r'.\src\icon.png')); win.show() # set the window icon and show the window 
+        win.setWindowIcon(QIcon(r'.\src\icon.png'))
+        win.show() # set the window icon and show the window 
         if read('Text') == '<time>': threading.Thread(target=second_process, args=(win,)).start() # start the second process
         if read('FontColor') == '<rainbow>': threading.Thread(target=third_process, args=(win,)).start() # start the thread
         app.exec_() # run the application
