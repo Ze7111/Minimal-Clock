@@ -36,7 +36,10 @@ class Update: # create the class
         # Get the current version
         currentVersion = read('AppVersion') # get the current version
         if done == False: # if the update has not been done
-            print(f"Current version: {currentVersion} | Latest version: {latestVersion}") # print the current and latest version
+            if latestVersion != currentVersion:
+                print(f"[red][bold]Current version: [red]{currentVersion} [white][bold]| [green][bold]Latest version: [red]{latestVersion}") # print the current and latest version
+            elif latestVersion == currentVersion:
+                print(f"[green][bold]Current version: [red]{currentVersion} [white][bold]| [green][bold]Latest version: [red]{latestVersion}")
             done = True # set the done variable to True
         # If the latest version is not the same as the current version
         if latestVersion != currentVersion: # if the latest version is not the same as the current version
