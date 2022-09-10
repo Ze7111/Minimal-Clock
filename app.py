@@ -1,4 +1,3 @@
-import threading
 from src.acrylic import WindowEffect
 from src.r_config import Read # import the module for reading the config file
 read = Read().get_default # read the config file
@@ -7,11 +6,13 @@ if read('FirstLaunch') == 'True' or read('FirstLaunch') == 'Backup-Used': # if t
     setup().write_to_file() # write the config file
     pass
 
-
-if read('AutoUpdate') == 'True':
-    from src.update import main
-    main()
-try:
+if read('AutoUpdate') == 'True': # if the AutoUpdate variable is True
+    try:
+        from src.update import main as update # import the update function
+        update() # update the program
+    except Exception: print('Failed to check for updates') # print failed to update program
+     
+try: # try to run the program
     import PySide2, configparser, ctypes, subprocess # type: ignore
     myappid = 'ze7111holdings.minimalclock.clock.100' # arbitrary string
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid) # set the app id
@@ -31,13 +32,15 @@ from src.acrylic import WindowEffect  # import the module for the clock
 from PySide2 import QtWidgets # type: ignore
 from PySide2.QtCore import Qt # type: ignore
 from PySide2.QtGui import QFont, QIcon # type: ignore
-import sys, os, subprocess
+import sys, os, subprocess, threading # type: ignore
 from time import strftime, sleep # import the time module
+from src.multithreading import main as startThread # import the startThread function
+from src.multithreading import stop_threads, stop_all_threads # import the stop_threads function
 
 
 innit: bool = False # if the window has been initialized
-stop_threads: bool = False # set the stop_threads variable to False
 scw, sch = 0, 0 # screen width and height
+show_colors = False # if the colors should be shown
 
 
 class Window(QWidget): # create a class for the window
@@ -47,10 +50,10 @@ class Window(QWidget): # create a class for the window
         screen = app.primaryScreen() # get the screen
         size = screen.size() # get the size of the screen
         scw, sch = size.width(), size.height() # set the screen width and height variables
-        self.setFixedWidth(scw)
+        self.setFixedWidth(scw) # set the width of the window
         self.setFixedHeight(sch) # set the window size
-        self.setWindowTitle(read('AppName'))
-        self.setWindowFlags(Qt.FramelessWindowHint)
+        self.setWindowTitle(read('AppName')) # set the window title
+        self.setWindowFlags(Qt.FramelessWindowHint) # set the window flags
         self.setAttribute(Qt.WA_TranslucentBackground) # set the window title, flags, and background
         self.setWindowIcon(QIcon('assets/icon.ico')) # set the window icon
         self.ui_layout = QtWidgets.QGridLayout(self)  # create a ui layout
@@ -64,34 +67,90 @@ class Window(QWidget): # create a class for the window
         self.windowFX = WindowEffect()  # instatiate the WindowEffect class
         self.windowFX.setAcrylicEffect(self.winId())  # set the Acrylic effect by specifying the window id
 
-def second_process(win):
+
+@startThread # start the thread
+def second_process(win): # create a function for the second process
     while True: # create a loop
-        global stop_threads # make the stop_threads variable global
         for i in range(100): # loop through every hex color smoothly
             sleep(1) # sleep for 1 second
-            win.label.setText(f"{strftime(read('TimeFormat'))}")
+            win.label.setText(f"{strftime(read('TimeFormat'))}") # set the text to the current time
             win.update() # update the text and the window
-            if stop_threads: break # if the stop_threads variable is True, break the loop
-        if stop_threads: break # if the stop_threads variable is True, break the loop
-        
-def third_process(win):
+            
+            if stop_threads() == True:   # if the stop_threads function returns True
+                break # break the loop
+        if stop_threads() == True:   # if the stop_threads function returns True
+            break # break the loop
+ 
+@startThread # start the thread
+def third_process(win): # create a function for the third process
     while True: # create a loop
-        global stop_threads # make the stop_threads variable global
-        # loop through every hex color smoothly
-        red, green, blue = 0, 0, 0 # set the red, green, and blue variables to 0
-        max=255 # max value for each color
-        step = 255//155 # 255/155 = 1.64
-        for i in range(0, max): # red
-            i += 1 # increment the i variable
-            red = 255 - (i*step)
-            green = 0 # set the red and green values
-            blue = 255 - red
-            RGBtriplet = (red, green, blue) # set the RGB triplet
-            win.label.setStyleSheet(f"color: rgb({red}, {green}, {blue});")
-            win.update()
-            sleep(0.01) # update the text         
-            if stop_threads: break # if the stop_threads variable is True, break the loop
-        if stop_threads: break # if the stop_threads variable is True, break the loop
+        red = 0 # set the red variable to 0
+        green = 0 # set the red, green, and blue variables to 0
+        blue = 0 # set the red, green, and blue variables to 0
+        global show_colors # make the show_colors variable global
+        for i in range(16777216): # loop through every hex color smoothly
+            for i in range(255): # loop through every hex color smoothly
+                if red == 255: # if the red color is 255
+                    break # break the loop
+                red += 1 # add 1 to the red variable
+                win.label.setStyleSheet(f"color: rgb({red}, {green}, {blue});") # set the text color
+                sleep(0.01) # sleep for 0.01 seconds
+                win.update() # update the window
+                if show_colors: print(f"rgb({red}, {green}, {blue})") # print the color
+                
+            for i in range(255): # loop through every hex color smoothly
+                if green == 255: # if the green value is 255
+                    break # break the loop
+                green += 1 # increase the green value
+                win.label.setStyleSheet(f"color: rgb({red}, {green}, {blue});") # set the text color
+                sleep(0.01) # sleep for 0.01 seconds
+                win.update() # update the window 
+                if show_colors: print(f"rgb({red}, {green}, {blue})") # print the color
+                
+            for i in range(255): # loop through every hex color smoothly
+                if blue == 255: # if the blue value is 255
+                    break # break the loop
+                blue += 1 # add 1 to the blue variable
+                win.label.setStyleSheet(f"color: rgb({red}, {green}, {blue});") # set the text color
+                sleep(0.01) # sleep for 0.01 seconds
+                win.update() # update the window 
+                if show_colors: print(f"rgb({red}, {green}, {blue})") # print the color
+                
+            if red == 255 and green == 255 and blue == 255: # if the color is white
+                for i in range(255): # loop through every hex color smoothly
+                    if red == 0: # if the red value is 0
+                        break # break the loop
+                    red -= 1 # decrease the red value
+                    win.label.setStyleSheet(f"color: rgb({red}, {green}, {blue});") # set the text color
+                    sleep(0.01) # set the text color
+                    win.update() # update the window
+                    if show_colors: print(f"rgb({red}, {green}, {blue})") # print the color
+                    
+                for i in range(255): # loop through every hex color smoothly
+                    if green == 0: # if the green value is 0
+                        break # break the loop
+                    green -= 1 # set the text color
+                    win.label.setStyleSheet(f"color: rgb({red}, {green}, {blue});") # set the text color
+                    sleep(0.01) # sleep for 0.01 seconds
+                    win.update() # update the window
+                    if show_colors: print(f"rgb({red}, {green}, {blue})") # print the color
+                    
+                for i in range(255):
+                    if blue == 0: # if the blue value is 0
+                        break # break the loop
+                    blue -= 1 # set the text color
+                    win.label.setStyleSheet(f"color: rgb({red}, {green}, {blue});") # set the text color
+                    sleep(0.01) # sleep for 0.01 seconds
+                    win.update() # update the window
+                    if show_colors: print(f"rgb({red}, {green}, {blue})")
+                
+                if stop_threads() == True:  # if the stop_threads function returns True
+                    break # break the loop 
+            
+            if stop_threads() == True:  # if the stop_threads function returns True
+                break # break the loop 
+        if stop_threads() == True:   # if the stop_threads function returns True
+            break # break the loop
 
 if __name__ == "__main__": # if the file is being run
     try: # try to run the code
@@ -99,9 +158,10 @@ if __name__ == "__main__": # if the file is being run
         window = win = Window() # create a window
         win.setWindowIcon(QIcon(r'.\src\icon.png'))
         win.show() # set the window icon and show the window 
-        if read('Text') == '<time>': threading.Thread(target=second_process, args=(win,)).start() # start the second process
-        if read('FontColor') == '<rainbow>': threading.Thread(target=third_process, args=(win,)).start() # start the thread
+        if read('Text') == '<time>': second_process(win)
+        if read('FontColor') == '<rainbow>': third_process(win) # start the third process
         app.exec_() # run the application
     finally: # if the code fails
-        stop_threads = True # set the stop_threads variable to True
+        print('Stopping threads...') # print a message
+        stop_all_threads()
         sys.exit(0) # exit the program
